@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.util.Random;
 
@@ -14,52 +15,63 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
     }
 
-    public void selecionarPedra(View view){
-        verificarGanhador("Pedra");
-
-    }
-    public void selecionarPapel(View view){
-        verificarGanhador("Papel");
-
-    }
-    public void selecionarTesoura(View view){
-        verificarGanhador("Tesoura");
-
+    public void selecionarPedra( View view ){
+        verificarGanhador("pedra");
     }
 
-    private String gerarEscolhaAleatoria() {
+    public void selecionarPapel( View view ){
+        verificarGanhador("papel");
+    }
 
-        String [] opcoes = {"pedra","papel","tesoura"};
-        int numeroAletario = new Random().nextInt(3);
+    public void selecionarTesoura( View view ){
+        verificarGanhador("tesoura");
+    }
+
+    private String gerarEscolhaAleatoriaApp() {
+
+        String[] opcoes = {"pedra", "papel", "tesoura"};
+        int numeroAleatorio = new Random().nextInt(3);//0 1 2
 
         ImageView imagemApp = findViewById(R.id.image_app);
-        String escolhaApp = opcoes[numeroAletario];
-
-        switch(escolhaApp){
-            case "pedra":
-                imagemApp.setImageResource(R.drawable.pedra);
-            break;
-            case "papel":
-                imagemApp.setImageResource(R.drawable.papel);
+        String escolhaApp = opcoes[numeroAleatorio];
+        switch ( escolhaApp ){
+            case "pedra" :
+                imagemApp.setImageResource( R.drawable.pedra );
                 break;
-            case "Tesoura":
-                imagemApp.setImageResource(R.drawable.tesoura);
+            case "papel" :
+                imagemApp.setImageResource( R.drawable.papel );
                 break;
-
+            case "tesoura" :
+                imagemApp.setImageResource( R.drawable.tesoura );
+                break;
         }
 
         return escolhaApp;
+
     }
+    private void verificarGanhador( String escolhaUsuario ){
 
-    private void verificarGanhador(String escolhaUsuario){
+        String escolhaApp = gerarEscolhaAleatoriaApp();
+        TextView textoResultado = findViewById(R.id.text_resultado);
 
-        String escolhaApp = gerarEscolhaAleatoria();
+        if(
+                (escolhaApp == "pedra" && escolhaUsuario == "tesoura") ||
+                        (escolhaApp == "papel" && escolhaUsuario == "pedra") ||
+                        (escolhaApp == "tesoura" && escolhaUsuario == "papel")
+        ){// App é ganhador
+            textoResultado.setText("Você perdeu :(");
+        }else if(
+                (escolhaUsuario == "pedra" && escolhaApp == "tesoura") ||
+                        (escolhaUsuario == "papel" && escolhaApp == "pedra") ||
+                        (escolhaUsuario == "tesoura" && escolhaApp == "papel")
+        ){// Usuário Ganhador
+            textoResultado.setText("Você Ganhou!! :)");
+        }else{//Empatou
+            textoResultado.setText("Empatamos ;)");
+        }
 
-        //System.out.println("Item clicado" + escolhaUsuario);
     }
-
 
 }
